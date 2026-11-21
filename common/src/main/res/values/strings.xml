@@ -603,7 +603,7 @@
     <string name="dialog_notification">Notify via pop-up dialog</string>
     <string name="mark_as_watched">Mark as watched</string>
     <string name="player_ui_animations">Enable player UI animations</string>
-    <string name="player_likes_count">Show likes/dislikes count</string>
+    <string name="player_likes_count">Show likes count</string>
     <string name="sorting_alphabetically2">Alphabetically (fast, animated previews)</string>
     <string name="sorting_default">Default (fast, animated previews)</string>
     <string name="content_block_exclude_channel">Exclude this channel from SponsorBlock</string>
@@ -774,4 +774,14 @@
     <string name="dial_open_app_to_allow">A new phone wants to cast. Open SmartFin to allow it.</string>
     <string name="dial_forget_devices">Forget trusted casting phones</string>
     <string name="dial_forget_devices_done">Trusted casting phones removed</string>
+    <string name="player_dislikes_count">Show dislikes count (Return YouTube Dislike)</string>
+    <string name="player_dislikes_count_desc">Privacy: sends the ID of every video you play to returnyoutubedislikeapi.com.</string>
+    <string name="content_block_privacy_desc">Privacy: only the first 4 characters of an anonymised hash of the video ID are sent to the SponsorBlock server, never the ID itself. No account or user ID.</string>
+    <string name="content_block_server">SponsorBlock server</string>
+    <string name="content_block_server_default">Default (%s)</string>
+    <string name="content_block_server_hint">Address of a SponsorBlock server or mirror, e.g. https://sponsor.ajay.app. Plain http only for addresses on your own network. Leave empty for the default.</string>
+    <string name="content_block_server_invalid">Not a valid server address</string>
+    <string name="content_block_server_test">Test server connection</string>
+    <string name="content_block_server_ok">Server works</string>
+    <string name="content_block_server_failed">Server did not answer</string>
 </resources>

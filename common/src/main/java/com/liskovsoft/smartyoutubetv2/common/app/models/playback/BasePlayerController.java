@@ -26,6 +26,7 @@ import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
 import com.liskovsoft.smartyoutubetv2.common.misc.ScreensaverManager;
+import com.liskovsoft.smartyoutubetv2.common.prefs.SponsorBlockData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
@@ -303,6 +304,10 @@ public abstract class BasePlayerController implements PlayerEventListener {
 
     protected VideoStateService getStateService() {
         return VideoStateService.instance(getContext());
+    }
+
+    protected SponsorBlockData getSponsorBlockData() {
+        return SponsorBlockData.instance(getContext());
     }
 
     protected SearchData getSearchData() {

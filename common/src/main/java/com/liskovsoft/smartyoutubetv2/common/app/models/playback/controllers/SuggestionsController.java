@@ -883,12 +883,25 @@ public class SuggestionsController extends BasePlayerController {
             return;
         }
 
+        // SmartFin: the like count comes from YouTube's own metadata (already set by Video.sync(metadata)).
+        // The dislike count needs Return YouTube Dislike, which receives the video id: separate opt-in, off by default.
+        if (!getPlayerTweaksData().isDislikesCounterEnabled()) {
+            video.dislikeCount = null;
+            getPlayer().setVideo(video);
+            return;
+        }
+
         Observable<DislikeData> dislikeDataObserve = mMediaItemService.getDislikeDataObserve(video.videoId);
 
         Disposable dislikeAction = dislikeDataObserve.subscribe(
                 dislikeData -> {
-                    video.sync(dislikeData);
-                    getPlayer().setVideo(video);
+                    // Only the dislike count is taken from the third party, the like count stays YouTube's
+                    if (dislikeData != null && dislikeData.getDislikeCount() != null) {
+                        video.dislikeCount = dislikeData.getDislikeCount();
+                    }
+                    if (getPlayer() != null) {
+                        getPlayer().setVideo(video);
+                    }
                 },
                 error -> Log.e(TAG, "Dislike not working...")
         );

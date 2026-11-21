@@ -4,7 +4,7 @@
 
 SmartFin is a YouTube client for **Android TV boxes, Android TVs and Android projectors** that you control with a remote. It is a fork of [SmartTube](https://github.com/yuliskov/SmartTube) by yuliskov. It keeps almost all of SmartTube's features, adds security fixes, and is tuned for remote control on TV boxes and projectors.
 
-> **Status: stable, version 1.0.0** (based on SmartTube 32.80). Download it from [Releases](https://github.com/irattarto/SmartFin/releases/latest); the app updates itself from there. Please report problems in [Issues](https://github.com/irattarto/SmartFin/issues).
+> **Status: stable, version 1.1.0** (based on SmartTube 32.80 with the playback fixes of 32.81). Download it from [Releases](https://github.com/irattarto/SmartFin/releases/latest); the app updates itself from there. Please report problems in [Issues](https://github.com/irattarto/SmartFin/issues).
 
 ## Compatibility
 
@@ -32,7 +32,7 @@ You can check it with `apksigner verify --print-certs SmartFin_*.apk`.
 **Security**
 - On Android 7.0, certificate checking is no longer switched off. Upstream trusted *every* TLS certificate on Android ≤ 7.0. SmartFin keeps validation on and only adds the three root certificates that 7.0 lacks (ISRG Root X1/X2, SSL.com ECC).
 - The hidden master password that unlocked the app and account locks has been removed.
-- Google sign-in tokens are left out of backups (local, Google Drive, Android auto backup). After restoring a backup, sign in again.
+- Google sign-in tokens are left out of backups (local and Android auto backup). After restoring a backup, sign in again.
 - Updates are offered only if the downloaded APK is signed with the same key as the installed app, and only over https.
 - The search provider can only be read by the system search. The backup import no longer accepts `file://` links.
 - Proxy passwords are masked in logs and given only to the proxy itself.
@@ -52,7 +52,11 @@ You can check it with `apksigner verify --print-certs SmartFin_*.apk`.
 - Channel links like `youtube.com/@name` open the channel. This was broken in upstream SmartTube too.
 
 **Privacy and playback**
-- SponsorBlock was removed. It sent the ID of every video you played to a third-party server.
+- **SponsorBlock, privately** (off by default). The app sends only the first 4 characters of an anonymised hash of the video ID, never the ID itself. Every prefix is shared by a huge number of YouTube videos, so the server can't tell which one you watch; it returns the segments of all of them and the app picks the right one on the TV. No account or user ID, nothing is submitted. You can use your own server or a mirror.
+- **DeArrow was removed.** It sent the ID of every video on screen to a third-party server, and SmartFin shows titles and thumbnails exactly as YouTube provides them.
+- The like count comes from YouTube. The dislike count (Return YouTube Dislike) is a separate option, off by default, because it sends the video ID to a third party.
+- **Google Drive backup was removed;** local backup stays. It used upstream's Google sign-in credentials, downloaded from upstream's GitHub while the app was running.
+- The app no longer downloads code or settings controlled by others: no credentials file from upstream's GitHub, and the YouTube decoding scripts are used only from the APK (no download fallback).
 - QR codes (sharing, About, sign-in) are generated on the device. Upstream sent the links, including the sign-in link, to an online QR service.
 - No other third-party image downloads: the language badge and the player's black placeholder are drawn locally.
 - The backup folder ID is random instead of being derived from the device's hardware ID.
@@ -66,7 +70,7 @@ All changes and fixes compared to SmartTube, build by build, are in [CHANGELOG.m
 ## Features (inherited from SmartTube)
 
 The interface is built for TVs. Other features:
-- DeArrow (optional, off by default)
+- SponsorBlock (optional, off by default, privacy-preserving lookup)
 - Adjustable playback speed
 - Resolutions up to 8K, 60 fps and HDR
 - Live chat

@@ -8,7 +8,7 @@ The status of the audit findings and planned work. The full audit (21 Nov 2026) 
 - [x] Own identity: `org.smartfin.*` application IDs, name, logo/banner/icon, own update channel, Crashlytics opt-in
 - [x] Android 7.0 TLS: trust-all TrustManager replaced by bundled ISRG X1/X2 + SSL.com ECC roots
 - [x] Hardcoded master password removed
-- [x] Sign-in tokens kept out of local/GDrive/auto backups
+- [x] Sign-in tokens kept out of local/auto backups
 - [x] Search provider protected (`GLOBAL_SEARCH`), backup import no longer accepts `file://`
 - [x] Updater: same-signer check, https-only downloads
 - [x] Proxy credentials masked in logs, answered for proxy auth only
@@ -46,12 +46,19 @@ The status of the audit findings and planned work. The full audit (21 Nov 2026) 
 
 ### Privacy
 - [x] SponsorBlock removed (sent every played video id to sponsor.ajay.app)
+- [x] SponsorBlock back with the hash-prefix API (4 hex chars of SHA-256), read-only, off by default, own server option + test, per-session cache
+- [x] DeArrow removed (sent every video id on screen; rule: show YouTube's titles/thumbnails unchanged)
+- [x] Likes from YouTube only; Return YouTube Dislike is a separate opt-in (off) with a notice
+- [x] Google Drive backup removed (upstream OAuth client fetched from upstream GitHub constants.json); old Drive work and tokens cleaned up on start
+- [x] YouTube Data API key / constants.json fetch removed; channel title/icon from YouTube's own browse API (channelMetadataRenderer)
+- [x] JS challenge solver: bundled scripts only (no cache of downloaded scripts, no GitHub fallback)
+- [x] Nested MediaServiceCore/SharedModules (upstream copy with the trust-all TrustManager) removed; module roots pinned to the repo
 - [x] QR codes generated on the device (ZXing); upstream sent shared links and even the sign-in link to api.qrserver.com
 - [x] Language button: country badge drawn locally (was a flag image from flagcdn.com)
 - [x] Black player placeholder embedded (was downloaded from via.placeholder.com)
 - [x] Backup folder id: random per install (was derived from ANDROID_ID / IMEI; the IMEI read could crash)
 - [x] Dead installed-apps scans removed (locale guessing, package search)
-- Still contacted, all optional: YouTube watch history (follows the history setting / incognito), Return YouTube Dislike (likes counter), DeArrow (off by default), chosen DoH server, GitHub updates
+- Still contacted, all optional: YouTube watch history (follows the history setting / incognito), SponsorBlock (off, hash prefix only), Return YouTube Dislike (off), chosen DNS server, GitHub updates (SmartFin releases)
 
 ### Playback
 - [x] Audio/video drift: default audio is AAC (mp4a) on every device; the old AC-3 default fell back to Opus/WebM, which drifts on many TV boxes. One-time migration of the saved AC-3 default

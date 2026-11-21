@@ -11,7 +11,6 @@ public class BrowseProcessorManager implements BrowseProcessor {
 
     public BrowseProcessorManager(Context context, OnItemReady onItemReady) {
         mProcessors = new ArrayList<>();
-        mProcessors.add(new DeArrowProcessor(context, onItemReady));
         mProcessors.add(new UnlocalizedTitleProcessor(context, onItemReady));
     }
 

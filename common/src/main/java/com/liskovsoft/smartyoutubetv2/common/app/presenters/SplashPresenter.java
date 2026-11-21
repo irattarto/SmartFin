@@ -1,5 +1,6 @@
 package com.liskovsoft.smartyoutubetv2.common.app.presenters;
 
+import androidx.work.WorkManager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +22,6 @@ import com.liskovsoft.smartyoutubetv2.common.app.presenters.dialogs.BootDialogPr
 import com.liskovsoft.smartyoutubetv2.common.app.views.BrowseView;
 import com.liskovsoft.smartyoutubetv2.common.app.views.SplashView;
 import com.liskovsoft.smartyoutubetv2.common.app.views.ViewManager;
-import com.liskovsoft.smartyoutubetv2.common.misc.GDriveBackupWorker;
 import com.liskovsoft.smartyoutubetv2.common.misc.LocalDriveBackupWorker;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.StreamReminderService;
@@ -119,8 +119,22 @@ public class SplashPresenter extends BasePresenter<SplashView> {
         YouTubeServiceManager.instance().warmUpCacheIfNeeded();
         enableHistoryIfNeeded();
         Utils.updateChannels(getContext());
-        GDriveBackupWorker.schedule(getContext());
         LocalDriveBackupWorker.schedule(getContext());
+        removeLegacyGoogleDriveBackup();
+    }
+
+    /**
+     * SmartFin: Google Drive backup was removed (it used upstream's Google sign-in credentials and uploaded
+     * the settings folder). Cancel a scheduled Drive backup from an older version and delete its sign-in tokens.
+     */
+    private void removeLegacyGoogleDriveBackup() {
+        try {
+            WorkManager.getInstance(getContext()).cancelUniqueWork("GDriveBackupWorker");
+        } catch (Exception e) {
+            Log.e(TAG, "Can't cancel the old Google Drive backup: %s", e.getMessage());
+        }
+
+        GlobalPreferences.instance(getContext()).clearLegacyOAuth2AccountData();
     }
 
     private void showAccountSelectionIfNeeded() {

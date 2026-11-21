@@ -1,13 +1,17 @@
 # SmartFin changelog
 
-SmartFin is a fork of [SmartTube](https://github.com/yuliskov/SmartTube) 32.80, adapted for Android TV boxes, Android TVs and projectors controlled with a remote. It requires Android 7.0 or newer.
+SmartFin is a fork of [SmartTube](https://github.com/yuliskov/SmartTube) 32.80 (with the playback fixes of 32.81), adapted for Android TV boxes, Android TVs and projectors controlled with a remote. It requires Android 7.0 or newer.
 
 This page lists what SmartFin changed and fixed compared to the original SmartTube. The project history was condensed into a single commit, so this file is the record of the changes.
 
 ## Overview: what is different from SmartTube
 
 ### Privacy
-- **SponsorBlock removed.** It sent the ID of every video you played to a third-party server.
+- **SponsorBlock, privately** (off by default). SmartTube sent the ID of every video you played to the SponsorBlock server. SmartFin sends only the first 4 characters of an anonymised hash of the ID. The server can't tell which video you watch: it returns the segments of every video sharing that prefix, and the app picks the right one on the TV. No account, no user ID, nothing submitted. You can choose your own server or a mirror.
+- **DeArrow removed.** It sent the ID of every video on screen to a third-party server to replace titles and thumbnails. SmartFin shows titles and thumbnails exactly as YouTube provides them.
+- **Dislike count is opt-in.** The like count comes from YouTube itself. The dislike count needs Return YouTube Dislike, which receives the video ID, so it is a separate option, off by default, with a notice.
+- **Google Drive backup removed.** It signed in with SmartTube's Google credentials, which the app downloaded from SmartTube's GitHub while running, and uploaded the settings folder. Local backup stays.
+- Nothing is downloaded from upstream servers any more: no credentials file, and the YouTube decoding scripts are used only from the APK (SmartTube could download and run a replacement script from GitHub without checking it).
 - **QR codes are generated on the TV** (sharing, About links, sign-in). SmartTube sent these links, including the sign-in link, to an online QR service.
 - No other third-party image downloads. The language badge and the player's black placeholder are drawn locally instead of being loaded from flagcdn.com and via.placeholder.com.
 - Crash reporting is off.
@@ -15,6 +19,7 @@ This page lists what SmartFin changed and fixed compared to the original SmartTu
 - Sign-in tokens are left out of backups, and token values are no longer written to logs.
 
 ### Playback
+- Playback fixes from SmartTube 32.81: the PoToken cache resets after 60 seconds again, and long buffering caused by a PoToken error now triggers the automatic fix.
 - **Audio stays in sync:** audio defaults to AAC on every device. SmartTube asked for AC-3 on 4K boxes, which in practice became Opus and drifted out of sync with the video on many TV boxes.
 - The default video quality matches what the box can really play: 4K60 only when the decoder, screen and RAM can handle it, otherwise 1080p60 or 1080p30.
 - Auto quality skips HDR streams on screens without HDR.
@@ -51,6 +56,15 @@ This page lists what SmartFin changed and fixed compared to the original SmartTu
 - The package name is `org.smartfin.stable`, so SmartFin installs next to SmartTube.
 
 ## Releases
+
+### 1.1.0
+- **SponsorBlock is back, privately:** off by default; only a 4-character hash prefix of the video ID is sent, never the ID; read-only, no user ID. Choose your own server or mirror and test it in the SponsorBlock settings.
+- **DeArrow removed:** titles and thumbnails are shown as YouTube provides them.
+- Like count from YouTube only; the dislike count (Return YouTube Dislike) is a separate option, off by default.
+- **Google Drive backup removed;** local backup stays. A scheduled Drive backup and the Drive sign-in are removed from the device on first start.
+- No downloads from upstream servers: no Google credentials file, no fallback decoding script.
+- Fixes from SmartTube 32.81: PoToken cache reset after 60 s; long buffering after a PoToken error is fixed automatically.
+- Channel names and icons for NewPipe subscription imports and offline subscriptions now come from YouTube itself (SmartTube used a Google API key downloaded from its GitHub).
 
 ### 1.0.0 (first stable release)
 - SmartFin's own version numbers start here: 1.0.0, based on SmartTube 32.80. It installs as an update over the test builds.

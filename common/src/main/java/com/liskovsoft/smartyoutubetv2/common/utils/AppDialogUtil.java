@@ -40,6 +40,7 @@ import com.liskovsoft.smartyoutubetv2.common.exoplayer.selector.FormatItem.Video
 import com.liskovsoft.smartyoutubetv2.common.misc.AppDataSourceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.MediaServiceManager;
 import com.liskovsoft.smartyoutubetv2.common.misc.MotherActivity;
+import com.liskovsoft.smartyoutubetv2.common.prefs.SponsorBlockData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.PlayerTweaksData;
@@ -726,6 +727,36 @@ public class AppDialogUtil {
         return OptionCategory.from(PLAYER_SCREEN_TIMEOUT_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
     }
 
+    public static OptionItem createExcludeFromContentBlockButton(
+            Context context,  Video video, MediaServiceManager serviceManager, Runnable onClose) {
+        return UiOptionItem.from(
+                context.getString(
+                        SponsorBlockData.instance(context).isChannelExcluded(video.channelId) ?
+                                R.string.content_block_stop_excluding_channel :
+                                R.string.content_block_exclude_channel),
+                optionItem -> {
+                    if (video.hasChannel()) {
+                        SponsorBlockData.instance(context).toggleExcludeChannel(video.channelId);
+                        if (onClose != null) {
+                            onClose.run();
+                        }
+                    } else {
+                        MessageHelpers.showMessage(context, R.string.wait_data_loading);
+
+                        serviceManager.loadMetadata(
+                                video,
+                                metadata -> {
+                                    video.sync(metadata);
+                                    SponsorBlockData.instance(context).excludeChannel(video.channelId);
+                                    if (onClose != null) {
+                                        onClose.run();
+                                    }
+                                }
+                        );
+                    }
+                });
+    }
+
     public static OptionCategory createSpeedListCategory(Context context, PlayerManager playbackController) {
         PlayerData playerData = PlayerData.instance(context);
         List<OptionItem> items = new ArrayList<>();
@@ -867,6 +898,31 @@ public class AppDialogUtil {
                 context.getString(R.string.player_network_stack),
                 options
         );
+    }
+
+    public static OptionCategory createIgnoreShortSegmentsCategory(Context context) {
+        return createIgnoreShortSegmentsCategory(context, () -> {});
+    }
+
+    public static OptionCategory createIgnoreShortSegmentsCategory(Context context, Runnable onSetCallback) {
+        SponsorBlockData sponsorBlockData = SponsorBlockData.instance(context);
+        String title = context.getString(R.string.ignore_short_segments);
+
+        List<OptionItem> options = new ArrayList<>();
+
+        for (int durationMs : Helpers.range(0, 20_000, 500)) {
+            float sec = durationMs / 1_000f;
+            options.add(UiOptionItem.from(
+                    durationMs == 0 ? context.getString(R.string.option_disabled)
+                            : context.getResources().getQuantityString(R.plurals.seconds, (int) sec, Helpers.toString(sec)),
+                    optionItem -> {
+                        sponsorBlockData.setIgnoredDurationMs(durationMs);
+                        onSetCallback.run();
+                    },
+                    durationMs == sponsorBlockData.getIgnoredDurationMs()));
+        }
+
+        return OptionCategory.from(IGNORE_DURATION_ID, OptionCategory.TYPE_RADIO_LIST, title, options);
     }
 
     public static OptionCategory createSleepTimerCategory(Context context) {

@@ -206,6 +206,7 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
                 {R.string.video_rotate, PlayerTweaksData.PLAYER_BUTTON_VIDEO_ROTATE},
                 {R.string.video_flip, PlayerTweaksData.PLAYER_BUTTON_VIDEO_FLIP},
                 {R.string.open_chat, PlayerTweaksData.PLAYER_BUTTON_CHAT},
+                {R.string.content_block_provider, PlayerTweaksData.PLAYER_BUTTON_CONTENT_BLOCK},
                 {R.string.seek_interval, PlayerTweaksData.PLAYER_BUTTON_SEEK_INTERVAL},
                 {R.string.share_link, PlayerTweaksData.PLAYER_BUTTON_SHARE},
                 {R.string.action_video_info, PlayerTweaksData.PLAYER_BUTTON_VIDEO_INFO},
@@ -464,6 +465,12 @@ public class PlayerSettingsPresenter extends BasePresenter<Void> {
         options.add(UiOptionItem.from(getContext().getString(R.string.player_likes_count),
                 option -> mPlayerTweaksData.setLikesCounterEnabled(option.isSelected()),
                 mPlayerTweaksData.isLikesCounterEnabled()));
+
+        // SmartFin: third-party dislike count, separate opt-in with a privacy notice
+        options.add(UiOptionItem.from(getContext().getString(R.string.player_dislikes_count),
+                getContext().getString(R.string.player_dislikes_count_desc),
+                option -> mPlayerTweaksData.setDislikesCounterEnabled(option.isSelected()),
+                mPlayerTweaksData.isDislikesCounterEnabled()));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.player_show_tooltips),
                 option -> mPlayerData.setTooltipsEnabled(option.isSelected()),

@@ -46,8 +46,6 @@ public class SignInPresenter extends BasePresenter<SignInView> {
 
         if (YTSignInPresenter.instance(getContext()).isWaiting()) {
             mPresenter = YTSignInPresenter.instance(getContext());
-        } else if (GoogleSignInPresenter.instance(getContext()).isWaiting()) {
-            mPresenter = GoogleSignInPresenter.instance(getContext());
         }
 
         if (mPresenter == null) {

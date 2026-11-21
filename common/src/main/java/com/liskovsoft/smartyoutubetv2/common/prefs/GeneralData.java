@@ -81,8 +81,6 @@ public class GeneralData implements ProfileChangeListener {
     private boolean mIsFullscreenModeEnabled;
     private Map<Integer, Video> mSelectedItems;
     private boolean mIsFirstUseTooltipEnabled;
-    private boolean mIsDeviceSpecificBackupEnabled;
-    private int mGDriveBackupFreqDays;
     private int mLocalDriveBackupFreqDays;
     private List<Video> mOldPinnedItems;
     private boolean mIsRemapSToSpeedToggleEnabled;
@@ -490,24 +488,6 @@ public class GeneralData implements ProfileChangeListener {
         persistState();
     }
 
-    public boolean isDeviceSpecificBackupEnabled() {
-        return mIsDeviceSpecificBackupEnabled;
-    }
-
-    public void setDeviceSpecificBackupEnabled(boolean enable) {
-        mIsDeviceSpecificBackupEnabled = enable;
-        persistState();
-    }
-
-    public int getGDriveBackupFreqDays() {
-        return mGDriveBackupFreqDays;
-    }
-
-    public void setGDriveBackupFreqDays(int freqDays) {
-        mGDriveBackupFreqDays = freqDays;
-        persistState();
-    }
-
     public int getLocalDriveBackupFreqDays() {
         return mLocalDriveBackupFreqDays;
     }
@@ -648,11 +628,11 @@ public class GeneralData implements ProfileChangeListener {
         mIsRememberPinnedPositionEnabled = Helpers.parseBoolean(split, 62, false);
         mSelectedItems = Helpers.parseMap(split, 63, Helpers::parseInt, Video::fromString);
         mIsFirstUseTooltipEnabled = Helpers.parseBoolean(split, 64, true);
-        mIsDeviceSpecificBackupEnabled = Helpers.parseBoolean(split, 65, false);
+        // 65: device specific Google Drive backup (removed in SmartFin)
         //mIsAutoBackupEnabled = Helpers.parseBoolean(split, 66, false);
         //mIsRemapPageDownToSpeedEnabled = Helpers.parseBoolean(split, 67, false);
         mSearchExitShortcut = Helpers.parseInt(split, 68, EXIT_SINGLE_BACK);
-        mGDriveBackupFreqDays = Helpers.parseInt(split, 69, -1);
+        // 69: Google Drive auto backup frequency (removed in SmartFin)
         mLocalDriveBackupFreqDays = Helpers.parseInt(split, 70, 1);
         //mIsRemapFastForwardToSpeedToggleEnabled = Helpers.parseBoolean(split, 71, false);
         mIsRemapSToSpeedToggleEnabled = Helpers.parseBoolean(split, 72, true);
@@ -679,8 +659,8 @@ public class GeneralData implements ProfileChangeListener {
                 mHistoryState, mIsRememberSubscriptionsPositionEnabled, null, mIsRemapNumbersToSpeedEnabled, mDpadUpDownAction,
                 null, null, mIsRemapDpadLeftToVolumeEnabled, null,
                 mIsHideWatchedFromNotificationsEnabled, mChangelog, mPlayerExitShortcut, null, mIsFullscreenModeEnabled, null,
-                mIsRememberPinnedPositionEnabled, mSelectedItems, mIsFirstUseTooltipEnabled, mIsDeviceSpecificBackupEnabled, null,
-                null, mSearchExitShortcut, mGDriveBackupFreqDays, mLocalDriveBackupFreqDays, null,
+                mIsRememberPinnedPositionEnabled, mSelectedItems, mIsFirstUseTooltipEnabled, null, null,
+                null, mSearchExitShortcut, null, mLocalDriveBackupFreqDays, null,
                 mIsRemapSToSpeedToggleEnabled));
     }
 

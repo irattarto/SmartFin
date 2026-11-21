@@ -93,6 +93,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
     private int mScreenOffDimmingPercents;
     private boolean mIsUIAnimationsEnabled;
     private boolean mIsLikesCounterEnabled;
+    private boolean mIsDislikesCounterEnabled;
     private boolean mIsChapterNotificationEnabled;
     private boolean mIsPlayerUiOnNextEnabled;
     private boolean mIsPlayerAutoVolumeEnabled;
@@ -525,6 +526,19 @@ public class PlayerTweaksData implements ProfileChangeListener {
         persistData();
     }
 
+    /**
+     * SmartFin: dislike count from Return YouTube Dislike (sends the video id to a third party).
+     * Separate from the like count (which comes from YouTube itself). Off by default.
+     */
+    public boolean isDislikesCounterEnabled() {
+        return mIsDislikesCounterEnabled;
+    }
+
+    public void setDislikesCounterEnabled(boolean enable) {
+        mIsDislikesCounterEnabled = enable;
+        persistData();
+    }
+
     public boolean isChapterNotificationEnabled() {
         return mIsChapterNotificationEnabled;
     }
@@ -789,6 +803,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
         //mIsSabrLiveEnabled = Helpers.parseBoolean(split, 61, false);
         mIsLiveEdgeEnabled = Helpers.parseBoolean(split, 62, false);
         mIsQuickSkipChaptersEnabled = Helpers.parseBoolean(split, 63, false);
+        mIsDislikesCounterEnabled = Helpers.parseBoolean(split, 64, false);
 
         updateDefaultValues();
     }
@@ -817,7 +832,7 @@ public class PlayerTweaksData implements ProfileChangeListener {
                 mIsOculusQuestFixEnabled, null, mIsExtraLongSpeedListEnabled, mIsQuickSkipVideosEnabled, mIsNetworkErrorFixingDisabled, mIsCommentsPlacedLeft,
                 null, mIsAudioFocusEnabled, mIsDontResizeVideoToFitDialogEnabled, mIsSuggestionsHorizontallyScrolled,
                 mIsQuickSkipShortsAltEnabled, mIsQuickSkipVideosAltEnabled, mIsAudioTimeStretchingEnabled, mIsQueueRespectsPlaybackMode, null,
-                mIsLiveEdgeEnabled, mIsQuickSkipChaptersEnabled
+                mIsLiveEdgeEnabled, mIsQuickSkipChaptersEnabled, mIsDislikesCounterEnabled
                 ));
     }
 

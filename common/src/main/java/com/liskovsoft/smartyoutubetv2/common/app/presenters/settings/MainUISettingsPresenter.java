@@ -9,7 +9,6 @@ import com.liskovsoft.smartyoutubetv2.common.app.models.playback.ui.UiOptionItem
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.AppDialogPresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.BrowsePresenter;
 import com.liskovsoft.smartyoutubetv2.common.app.presenters.base.BasePresenter;
-import com.liskovsoft.smartyoutubetv2.common.prefs.DeArrowData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.GeneralData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData;
 import com.liskovsoft.smartyoutubetv2.common.prefs.MainUIData.ColorScheme;
@@ -23,7 +22,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
     private final MainUIData mMainUIData;
     private final GeneralData mGeneralData;
     private final PlayerData mPlayerData;
-    private final DeArrowData mDeArrowData;
     private boolean mRestartApp;
     private final Runnable mOnFinish = () -> {
         if (mRestartApp) {
@@ -37,7 +35,6 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         mMainUIData = MainUIData.instance(context);
         mGeneralData = GeneralData.instance(context);
         mPlayerData = PlayerData.instance(context);
-        mDeArrowData = DeArrowData.instance(context);
     }
 
     public static MainUISettingsPresenter instance(Context context) {
@@ -303,10 +300,7 @@ public class MainUISettingsPresenter extends BasePresenter<Void> {
         List<OptionItem> options = new ArrayList<>();
         
         options.add(UiOptionItem.from(getContext().getString(R.string.card_unlocalized_titles),
-                option -> {
-                    mMainUIData.setUnlocalizedTitlesEnabled(option.isSelected());
-                    mDeArrowData.setReplaceTitlesEnabled(false);
-                },
+                option -> mMainUIData.setUnlocalizedTitlesEnabled(option.isSelected()),
                 mMainUIData.isUnlocalizedTitlesEnabled()));
 
         options.add(UiOptionItem.from(getContext().getString(R.string.time_format_24) + " " + getContext().getString(R.string.time_format),
