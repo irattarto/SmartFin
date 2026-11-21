@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SmartFin: Android auto backup / adb backup (API 23-30). Settings are backed up, Google sign-in tokens are not. -->
+<full-backup-content>
+    <exclude domain="file" path="global_prefs/media_service_account_data" />
+    <exclude domain="file" path="global_prefs/oauth2_account_data" />
+</full-backup-content>

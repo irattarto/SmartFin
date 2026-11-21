@@ -1,0 +1,8 @@
+[submodule "SharedModules"]
+	path = SharedModules
+	url = https://github.com/irattarto/SharedModules
+	branch = smartfin/main
+[submodule "MediaServiceCore"]
+	path = MediaServiceCore
+	url = https://github.com/irattarto/MediaServiceCore
+	branch = smartfin/main

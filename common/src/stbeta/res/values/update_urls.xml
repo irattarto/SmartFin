@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="update_urls">
+        <item>https://github.com/irattarto/SmartFin/releases/latest/download/smartfin_beta.json</item>
+    </string-array>
+</resources>

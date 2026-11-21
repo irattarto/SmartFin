@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SmartFin: Android 12+ cloud backup and device transfer. Settings are kept, Google sign-in tokens are not. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="file" path="global_prefs/media_service_account_data" />
+        <exclude domain="file" path="global_prefs/oauth2_account_data" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="file" path="global_prefs/media_service_account_data" />
+        <exclude domain="file" path="global_prefs/oauth2_account_data" />
+    </device-transfer>
+</data-extraction-rules>
